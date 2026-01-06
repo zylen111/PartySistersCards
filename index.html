@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>聚会姐姐牌</title>
+    <style>
+        :root {
+            --bg-color: #2c1e12; 
+            --card-ivory: #fcfaf2; 
+            --text-color: #e0c097; 
+            --accent-red: #a93226; 
+            --accent-black: #3e2723; 
+            --btn-color: #8d6e63; 
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: url("https://www.transparenttextures.com/patterns/damask-weave.png");
+            color: var(--text-color);
+            font-family: "Palatino Linotype", "Book Antiqua", Palatino, "Microsoft YaHei", serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start; /* 改为从顶部开始排列 */
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            text-align: center;
+            padding-top: 5vh; /* 顶部预留空间 */
+            box-sizing: border-box;
+        }
+
+        h1 { 
+            margin: 0 0 20px 0; 
+            font-size: 1.8rem; 
+            letter-spacing: 3px;
+            color: var(--text-color);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            border-bottom: 2px solid var(--btn-color);
+            padding-bottom: 10px;
+            flex-shrink: 0;
+        }
+
+        /* 牌容器固定高度 */
+        .card-container {
+            perspective: 1200px;
+            width: 220px;
+            height: 310px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.6));
+            flex-shrink: 0;
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border-radius: 18px;
+        }
+
+        .card.flipped { transform: rotateY(180deg); }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 18px;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .card-back {
+            background-image: url('https://img.zcool.cn/community/01d9425944cb5da8012193a38d6139.jpg@1280w_1l_2o_100sh.jpg');
+            background-size: cover;
+            background-position: center;
+            border: 4px solid #4e342e;
+        }
+
+        .card-front {
+            background-color: var(--card-ivory);
+            background-image: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
+            color: var(--accent-black);
+            transform: rotateY(180deg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 5rem;
+            position: relative;
+            border: 8px solid #f0e6d2;
+        }
+
+        .card-corner {
+            position: absolute;
+            font-size: 1.8rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1;
+            font-weight: bold;
+        }
+
+        .top-left { top: 15px; left: 15px; }
+        .bottom-right { bottom: 15px; right: 15px; transform: rotate(180deg); }
+
+        .red { color: var(--accent-red); }
+        .black { color: var(--accent-black); }
+
+        /* 规则显示区域 */
+        .rule-display {
+            height: 110px;
+            width: 280px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .rule-title {
+            font-size: 1.4rem;
+            color: var(--card-ivory);
+            margin: 0 0 8px 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+        }
+
+        .rule-desc {
+            font-size: 0.95rem;
+            line-height: 1.4;
+            font-style: italic;
+        }
+
+        /* 牌堆剩余 - 固定在规则框和按钮之间 */
+        .status-container {
+            margin: 15px 0;
+            font-size: 0.85rem;
+            color: rgba(224, 192, 151, 0.7);
+            height: 20px;
+            line-height: 20px;
+            flex-shrink: 0;
+        }
+
+        /* 按钮固定样式 */
+        button {
+            background: linear-gradient(145deg, var(--btn-color), #5d4037);
+            color: white;
+            border: 2px solid #3e2723;
+            padding: 12px 60px;
+            font-size: 1.3rem;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 6px #3e2723, 0 10px 20px rgba(0,0,0,0.4);
+            transition: all 0.1s;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        button:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px #3e2723, 0 5px 10px rgba(0,0,0,0.4);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>⚜️ 聚会姐姐牌 ⚜️</h1>
+
+    <div class="card-container" onclick="drawCard()">
+        <div class="card" id="card">
+            <div class="card-face card-back"></div>
+            <div class="card-face card-front" id="cardFront">
+                <div class="card-corner top-left"><span id="tl-val"></span><span id="tl-suit"></span></div>
+                <div id="center-suit"></div>
+                <div class="card-corner bottom-right"><span id="br-val"></span><span id="br-suit"></span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="rule-display">
+        <div class="rule-title" id="ruleTitle">准备就绪</div>
+        <div class="rule-desc" id="ruleDesc">点击下方按钮开始抽牌，遵守牌面规则！</div>
+    </div>
+
+    <div class="status-container">
+        牌堆剩余: <span id="deckCount">52</span> 张
+    </div>
+
+    <button id="drawBtn" onclick="drawCard()">点击抽取</button>
+
+    <script>
+        const suits = ['♠', '♥', '♣', '♦'];
+        const values = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+        const rules = {
+            'A': { title: '挡酒牌', desc: '免死金牌，可以帮自己挡一次酒，用完作废。' },
+            '2': { title: '姐姐牌', desc: '直到下张2出现前，你可以跟任何人一起喝酒，并且喝酒的人必须叫你“姐姐”' },
+            '3': { title: '逛三园', desc: '说出园子里的东西（动物园/果园/菜园），说错或卡顿者喝酒。' },
+            '4': { title: '真心话', desc: '开启真心话游戏。' },
+            '5': { title: '照相机', desc: '你喊“照相”时所有人定格，最后动的人喝。' },
+            '6': { title: '摸鼻子', desc: '你随时摸鼻子，其他人看到需跟着摸，最后一个摸的人喝。' },
+            '7': { title: '逢七过', desc: '报数中跳过含7或7倍数的数字，错者喝酒。' },
+            '8': { title: '厕所牌', desc: '只有拿到这张牌的人才能去厕所。' },
+            '9': { title: '自己喝', desc: '运气不错，自罚一杯。' },
+            '10': { title: '神经病', desc: '任何人不能理你，谁理你谁喝酒。直到下张10出现。' },
+            'J': { title: '上家喝', desc: '你左手边的人（上家）喝一杯。' },
+            'Q': { title: '下家喝', desc: '你右手边的人（下家）喝一杯。' },
+            'K': { title: '大家喝', desc: '举起酒杯，所有人一起干杯！' }
+        };
+
+        let deck = [];
+
+        function initDeck() {
+            deck = [];
+            for (let s of suits) {
+                for (let v of values) {
+                    deck.push({ suit: s, value: v });
+                }
+            }
+            for (let i = deck.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [deck[i], deck[j]] = [deck[j], deck[i]];
+            }
+            updateCount();
+        }
+
+        function updateCount() {
+            document.getElementById('deckCount').innerText = deck.length;
+        }
+
+        function drawCard() {
+            const cardEl = document.getElementById('card');
+            if (cardEl.classList.contains('flipped')) {
+                cardEl.classList.remove('flipped');
+                setTimeout(performDraw, 350); 
+            } else {
+                performDraw();
+            }
+        }
+
+        function performDraw() {
+            if (deck.length === 0) {
+                alert("牌堆已空，重新洗牌！");
+                initDeck();
+                return;
+            }
+            const card = deck.pop();
+            updateCount();
+            const isRed = (card.suit === '♥' || card.suit === '♦');
+            
+            setTimeout(() => {
+                document.getElementById('tl-val').innerText = card.value;
+                document.getElementById('tl-suit').innerText = card.suit;
+                document.getElementById('br-val').innerText = card.value;
+                document.getElementById('br-suit').innerText = card.suit;
+                document.getElementById('center-suit').innerText = card.suit;
+                document.getElementById('cardFront').className = `card-face card-front ${isRed ? 'red' : 'black'}`;
+                const rule = rules[card.value];
+                document.getElementById('ruleTitle').innerText = `${card.value} - ${rule.title}`;
+                document.getElementById('ruleDesc').innerText = rule.desc;
+                document.getElementById('card').classList.add('flipped');
+            }, 50);
+        }
+
+        initDeck();
+    </script>
+</body>
+</html>
