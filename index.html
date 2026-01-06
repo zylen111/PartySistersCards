@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>聚会姐姐牌</title>
+    <title>聚会姐妹牌</title>
     <style>
         :root {
             --bg-color: #2c1e12; 
@@ -172,7 +172,7 @@
 </head>
 <body>
 
-    <h1>⚜️ 聚会姐姐牌 ⚜️</h1>
+    <h1>⚜️ 聚会姐妹牌 ⚜️</h1>
 
     <div class="card-container" onclick="drawCard()">
         <div class="card" id="card">
@@ -200,16 +200,16 @@
         const suits = ['♠', '♥', '♣', '♦'];
         const values = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
         const rules = {
-            'A': { title: '挡酒牌', desc: '免死金牌，可以帮自己挡一次酒，用完作废。' },
+            'A': { title: '挡酒牌', desc: '可以帮自己挡一次酒，用完作废。' },
             '2': { title: '姐姐牌', desc: '直到下张2出现前，你可以跟任何人一起喝酒，并且喝酒的人必须叫你“姐姐”' },
             '3': { title: '逛三园', desc: '说出园子里的东西（动物园/果园/菜园），说错或卡顿者喝酒。' },
             '4': { title: '真心话', desc: '开启真心话游戏。' },
             '5': { title: '照相机', desc: '你喊“照相”时所有人定格，最后动的人喝。' },
             '6': { title: '摸鼻子', desc: '你随时摸鼻子，其他人看到需跟着摸，最后一个摸的人喝。' },
             '7': { title: '逢七过', desc: '报数中跳过含7或7倍数的数字，错者喝酒。' },
-            '8': { title: '厕所牌', desc: '只有拿到这张牌的人才能去厕所。' },
+            '8': { title: '作弊牌', desc: '只有拿到这张牌的人才能去卫生间。' },
             '9': { title: '自己喝', desc: '运气不错，自罚一杯。' },
-            '10': { title: '神经病', desc: '任何人不能理你，谁理你谁喝酒。直到下张10出现。' },
+            '10': { title: '对话牌', desc: '任何人都与你对话，谁与你对话谁喝酒。直到下张10出现。' },
             'J': { title: '上家喝', desc: '你左手边的人（上家）喝一杯。' },
             'Q': { title: '下家喝', desc: '你右手边的人（下家）喝一杯。' },
             'K': { title: '大家喝', desc: '举起酒杯，所有人一起干杯！' }
